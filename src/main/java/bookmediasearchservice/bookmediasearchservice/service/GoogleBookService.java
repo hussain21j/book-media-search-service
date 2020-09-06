@@ -56,22 +56,11 @@ public class GoogleBookService {
     }
 
     public List<String> getAuthors(List<String> writers) {
-        try{
-            List<String> writerList = new ArrayList<>();
-            for (String writer: writers) {
-                writerList.add(writer);
-            }
-            return writerList;
-        } catch (Exception e) {
-            throw new RuntimeException("something went wrong");
-        }
-
-
-       /* List<String> writerList = new ArrayList<>();
+        List<String> writerList = new ArrayList<>();
         if(!Objects.isNull(writers) && writers.size() > 0) {
             writerList.addAll(writers);
         }
-        return writerList;*/
+        return writerList;
     }
 
 
