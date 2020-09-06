@@ -1,15 +1,18 @@
 package bookmediasearchservice.bookmediasearchservice.controller;
 
 
+import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 import bookmediasearchservice.bookmediasearchservice.service.GoogleBookService;
+import bookmediasearchservice.bookmediasearchservice.service.SearchService;
+import javafx.application.Application;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -17,19 +20,19 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Tayab Hussain
  */
-@Controller
+@RestController
+@RequestMapping("searchservice")
 @Slf4j
 public class SearchController {
 
     @Autowired
-    GoogleBookService bookService;
+    SearchService searchService;
 
     @CrossOrigin
-    @GetMapping("search")
-    public ResponseEntity getAllMessages(@RequestParam(required = true) String name) {
+    @GetMapping(value = "/search", produces = "application/json")
+    public List<SearchResponse> getAllMessages(@RequestParam(required = true) String name) {
         log.info("name passed is :"+name);
-        bookService.getBooks();
-        String x = new String("OK");
-        return new ResponseEntity(x, HttpStatus.OK);
+        List<SearchResponse> responseList=  searchService.searchMedia(name);
+        return responseList;
     }
 }
