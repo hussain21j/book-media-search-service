@@ -1,6 +1,6 @@
 package bookmediasearchservice.bookmediasearchservice.dto.book;
 
-import bookmediasearchservice.bookmediasearchservice.dto.Response;
+import bookmediasearchservice.bookmediasearchservice.converters.ProviderSearchResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BookSearchResponse {
+public class BookSearchResponse implements ProviderSearchResponse {
    String kind;
    int totalItems;
    List<Items> items = new ArrayList<>();

@@ -1,39 +1,43 @@
 package bookmediasearchservice.bookmediasearchservice.service;
 
-import bookmediasearchservice.bookmediasearchservice.dto.Response;
-import bookmediasearchservice.bookmediasearchservice.dto.Result;
-import bookmediasearchservice.bookmediasearchservice.dto.SearchItemType;
+import bookmediasearchservice.bookmediasearchservice.converters.ServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 import bookmediasearchservice.bookmediasearchservice.dto.book.BookSearchResponse;
-import bookmediasearchservice.bookmediasearchservice.dto.book.Items;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-@Service
 @Slf4j
-public class GoogleBookService {
+public class GoogleBookService implements SearchService {
     private static final String API_ENDPOINT = "https://www.googleapis.com/books/v1/volumes?";
+    private ServiceConverter serviceConverter;
 
-    public List<SearchResponse> search(String bookName)
-    {
+    /**
+     * Search in the google book service
+     * @param text
+     * @return
+     */
+    @Override
+    public List<SearchResponse> search(String text) {
         try{
-            final String uri = buildURL(bookName);
+            final String uri = buildURL(text);
             RestTemplate restTemplate = new RestTemplate();
 
             String result = restTemplate.getForObject(uri, String.class);
             log.info(result);
-            return converter(BookSearchResponse.READER.readValue(result));
+            return this.serviceConverter.convert(BookSearchResponse.READER.readValue(result));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
+
+    GoogleBookService(ServiceConverter serviceConverter) {
+        this.serviceConverter = serviceConverter;
+    }
+
+
 
     public String buildURL(String bookName) {
         return new StringBuilder(API_ENDPOINT).append("q=").append(bookName.trim()).append("&&").append("maxResults=5").toString();
@@ -42,7 +46,7 @@ public class GoogleBookService {
     /**
      * Converts the iTune Response to the SearchResponse
      */
-    public List<SearchResponse> converter(BookSearchResponse response) {
+   /* public List<SearchResponse> converter(BookSearchResponse response) {
         List<SearchResponse> targetList = new ArrayList<>();
         for(Items item: response.getItems()) {
             targetList.add(SearchResponse.builder()
@@ -61,7 +65,8 @@ public class GoogleBookService {
             writerList.addAll(writers);
         }
         return writerList;
-    }
+    }*/
+
 
 
 }

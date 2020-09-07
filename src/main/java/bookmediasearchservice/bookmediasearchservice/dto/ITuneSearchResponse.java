@@ -15,11 +15,11 @@
 */
 package bookmediasearchservice.bookmediasearchservice.dto;
 
+import bookmediasearchservice.bookmediasearchservice.converters.ProviderSearchResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ import java.util.List;
  * Full iTunes Search or Lookup response
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Response {
+public class ITuneSearchResponse implements ProviderSearchResponse {
 
 	private int resultCount;
 	private final List<Result> results = new ArrayList<>();
@@ -36,7 +36,7 @@ public class Response {
 	}
 
 	//converts the
-	public static final ObjectReader READER = new ObjectMapper().readerFor(Response.class);
+	public static final ObjectReader READER = new ObjectMapper().readerFor(ITuneSearchResponse.class);
 
 	public void setResultCount(int resultCount) {
 		this.resultCount = resultCount;

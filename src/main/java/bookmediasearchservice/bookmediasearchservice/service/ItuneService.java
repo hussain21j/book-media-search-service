@@ -16,6 +16,7 @@
 package bookmediasearchservice.bookmediasearchservice.service;
 
 
+import bookmediasearchservice.bookmediasearchservice.converters.ServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.dto.*;
 import bookmediasearchservice.bookmediasearchservice.http.Connector;
 import bookmediasearchservice.bookmediasearchservice.http.URLConnector;
@@ -24,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -37,12 +37,9 @@ import java.util.List;
  * 
  * @see <a href="https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching">Search API</a>
  */
-@NoArgsConstructor
-@Service
 @Slf4j
-public class ItuneService implements Serializable {
+public class ItuneService implements SearchService {
 
-	private static final long serialVersionUID = 1476515615735L;
 	private static final String API_ENDPOINT = "https://itunes.apple.com/search?";
 
 	private String term;
@@ -50,11 +47,21 @@ public class ItuneService implements Serializable {
 	private Lang lang;
 	private Media media = Media.MUSIC;
 	private Integer version;
+	private ServiceConverter serviceConverter;
 
 
+	ItuneService(ServiceConverter serviceConverter) {
+		this.serviceConverter = serviceConverter;
+	}
 
-	public List<SearchResponse> search(String name) {
-		this.term = name;
+	/**
+	 * search the iTune service
+	 * @param text
+	 * @return
+	 */
+	@Override
+	public List<SearchResponse> search(String text) {
+		this.term = text;
 		Connector connector = URLConnector.INSTANCE;
 		if (connector == null) {
 			throw new IllegalArgumentException("connector can not be null");
@@ -63,7 +70,7 @@ public class ItuneService implements Serializable {
 			String url = buildURL();
 			String response = connector.get(url);
 			log.trace("{} -> {}", url, response);
-			return converter(Response.READER.readValue(response));
+			return this.serviceConverter.convert(ITuneSearchResponse.READER.readValue(response));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -135,26 +142,6 @@ public class ItuneService implements Serializable {
 			return "&version=" + version;
 		}
 		return "";
-	}
-
-	/**
-	 * Converts the iTune Response to the SearchResponse
-	 */
-	public List<SearchResponse> converter(Response response) {
-		List<SearchResponse> targetList = new ArrayList<>();
-		for(Result result: response.getResults()) {
-			targetList.add(SearchResponse.builder()
-					.title(result.getTrackName())
-					.type(SearchItemType.ALBUM.getType())
-					.authorsOrArtists(getArtists(result.getArtistName()))
-					.information(result.getCollectionName())
-					.build());
-		}
-		return targetList;
-	}
-
-	public List<String> getArtists(String artist) {
-		return Arrays.asList(artist);
 	}
 
 }

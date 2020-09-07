@@ -17,14 +17,10 @@ package bookmediasearchservice.bookmediasearchservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- * Single result in an iTunes {@link Response}.
+ * Single result in an iTunes {@link ITuneSearchResponse}.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Result {
