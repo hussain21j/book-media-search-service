@@ -2,28 +2,37 @@ package bookmediasearchservice.bookmediasearchservice.service;
 
 import bookmediasearchservice.bookmediasearchservice.converters.GoogleServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.converters.ITunerServiceConverter;
-import bookmediasearchservice.bookmediasearchservice.dto.Media;
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
+@Slf4j
 public class SearchingService {
+    @Value("${count.search.result}")
+    int searchCount;
+
+    @Value("${google.book.search.service.endpoint}")
+    String googleBookServiceUrl;
+
+    @Value("${iTune,search.service.endpoint}")
+    String iTuneServiceUrl;
 
     public List<SearchResponse> searchMedia(String name) {
-        ArrayList<SearchResponse> responses = new ArrayList<>();
+        log.info("searchCount :"+searchCount);
 
+        GoogleBookService googleBookService = new GoogleBookService(new GoogleServiceConverter(), googleBookServiceUrl, searchCount);
+        ITuneService ituneService = new ITuneService(new ITunerServiceConverter(), iTuneServiceUrl, searchCount);
+        List<SearchService> searchServices = Arrays.asList(googleBookService, ituneService);
 
-        GoogleBookService googleBookService = new GoogleBookService(new GoogleServiceConverter());
-        ItuneService ituneService = new ItuneService(new ITunerServiceConverter());
+        SearchProcessor processor = new SearchProcessor(searchServices, name);
 
-        responses.addAll(googleBookService.search(name));
-        responses.addAll(ituneService.search(name));
-        responses.sort(Comparator.comparing(response -> response.getTitle()));
-        return responses;
+        return processor.processSearch();
+
     }
+
 }

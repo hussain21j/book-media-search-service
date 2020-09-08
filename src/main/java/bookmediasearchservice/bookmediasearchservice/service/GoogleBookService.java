@@ -4,15 +4,18 @@ import bookmediasearchservice.bookmediasearchservice.converters.ServiceConverter
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 import bookmediasearchservice.bookmediasearchservice.dto.book.BookSearchResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Slf4j
+@AllArgsConstructor
 public class GoogleBookService implements SearchService {
-    private static final String API_ENDPOINT = "https://www.googleapis.com/books/v1/volumes?";
     private ServiceConverter serviceConverter;
+    private String apiEndpoint;
+    private int resultCount;
 
     /**
      * Search in the google book service
@@ -33,40 +36,8 @@ public class GoogleBookService implements SearchService {
         }
     }
 
-    GoogleBookService(ServiceConverter serviceConverter) {
-        this.serviceConverter = serviceConverter;
-    }
-
-
-
     public String buildURL(String bookName) {
-        return new StringBuilder(API_ENDPOINT).append("q=").append(bookName.trim()).append("&&").append("maxResults=5").toString();
+        return new StringBuilder(apiEndpoint).append("q=").append(bookName.trim()).append("&&").append("maxResults="+resultCount).toString();
     }
-
-    /**
-     * Converts the iTune Response to the SearchResponse
-     */
-   /* public List<SearchResponse> converter(BookSearchResponse response) {
-        List<SearchResponse> targetList = new ArrayList<>();
-        for(Items item: response.getItems()) {
-            targetList.add(SearchResponse.builder()
-                    .title(item.getVolumeInfo().getTitle())
-                    .type(SearchItemType.BOOK.getType())
-                    .authorsOrArtists(getAuthors(item.getVolumeInfo().getAuthors()))
-                    .information(item.getVolumeInfo().getDescription())
-                    .build());
-        }
-        return targetList;
-    }
-
-    public List<String> getAuthors(List<String> writers) {
-        List<String> writerList = new ArrayList<>();
-        if(!Objects.isNull(writers) && writers.size() > 0) {
-            writerList.addAll(writers);
-        }
-        return writerList;
-    }*/
-
-
 
 }
