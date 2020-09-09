@@ -6,7 +6,9 @@ import lombok.Setter;
 import java.util.Date;
 
 /**
- * Custom Error message
+ * <p>
+ * The POJO used for error response
+ * </p>
  */
 
 @Getter

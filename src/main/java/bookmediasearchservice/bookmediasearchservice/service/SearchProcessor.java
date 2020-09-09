@@ -8,9 +8,11 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
+ * <p>
  * makes the search in all the searching services provided
+ * </p>
  */
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class SearchProcessor {
     List<SearchService> searchServices;
     String textToSearch;

@@ -13,31 +13,34 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-package bookmediasearchservice.bookmediasearchservice.dto;
+package bookmediasearchservice.bookmediasearchservice.dto.itune;
 
 import bookmediasearchservice.bookmediasearchservice.converters.ProviderSearchResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Full iTunes Search or Lookup response
+ * <P>
+ * iTunes Search response POJO
+ * </P>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ToString
 public class ITuneSearchResponse implements ProviderSearchResponse {
 
 	private int resultCount;
 	private final List<Result> results = new ArrayList<>();
+	//mapper to convert json string to the object
+	public static final ObjectReader READER = new ObjectMapper().readerFor(ITuneSearchResponse.class);
+
 	public int getResultCount() {
 		return resultCount;
 	}
-
-	//converts the
-	public static final ObjectReader READER = new ObjectMapper().readerFor(ITuneSearchResponse.class);
-
 	public void setResultCount(int resultCount) {
 		this.resultCount = resultCount;
 	}
@@ -52,10 +55,4 @@ public class ITuneSearchResponse implements ProviderSearchResponse {
 			this.results.addAll(results);
 		}
 	}
-
-	@Override
-	public String toString() {
-		return "Response [resultCount=" + resultCount + ", results=" + results + "]";
-	}
-	
 }

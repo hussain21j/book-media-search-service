@@ -4,17 +4,29 @@ import bookmediasearchservice.bookmediasearchservice.converters.ProviderSearchRe
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <p>
+ * GoogleBooKService search response POJO
+ * </p>
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor(staticName = "of")
+@NoArgsConstructor
 public class BookSearchResponse implements ProviderSearchResponse {
-   String kind;
-   int totalItems;
-   List<Items> items = new ArrayList<>();
-
-   public static final ObjectReader READER = new ObjectMapper().readerFor(BookSearchResponse.class);
+    String kind;
+    int totalItems;
+    List<Items> items = new ArrayList<>();
+    /**
+     * mapper to transform json string to object
+     */
+    public static final ObjectReader READER = new ObjectMapper().readerFor(BookSearchResponse.class);
 
     public String getKind() {
         return kind;

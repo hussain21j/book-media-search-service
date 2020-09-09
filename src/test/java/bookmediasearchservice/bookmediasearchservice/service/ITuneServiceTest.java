@@ -9,7 +9,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.List;
 
 
-public class ItuneServiceTest {
+public class ITuneServiceTest {
 
     @Test
     public void searchMusic_HappyFlow() {
@@ -20,10 +20,25 @@ public class ItuneServiceTest {
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         //when
-        List<SearchResponse>  responses =  service.search("i love you");
+        List<SearchResponse>  responses =  service.search("Hello world");
         //then
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses.size()).isEqualTo(5);
+    }
+
+    @Test
+    public void searchMusic_WrongURL() {
+        //given
+        String url = "https://itunes.appplee.com/search?";
+        int searchResultCount = 5;
+        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount);
+        ReflectionTestUtils.setField(service, "apiEndpoint", url);
+        ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
+        //when
+        List<SearchResponse>  responses =  service.search("42 mile stone");
+        //then
+        Assertions.assertThat(responses).isNotNull();
+        Assertions.assertThat(responses).isEmpty();
     }
 
 

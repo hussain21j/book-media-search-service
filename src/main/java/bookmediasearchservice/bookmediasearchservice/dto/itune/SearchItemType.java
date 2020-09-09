@@ -1,5 +1,11 @@
-package bookmediasearchservice.bookmediasearchservice.dto;
+package bookmediasearchservice.bookmediasearchservice.dto.itune;
 
+/**
+ * <p>
+ * item types that can be searched on the iTune
+ * these can be used in combination with entity to make search in types
+ * </p>
+ */
 public enum  SearchItemType {
     BOOK("Book"),
     ALBUM("Album");

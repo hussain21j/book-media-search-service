@@ -13,7 +13,9 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-package bookmediasearchservice.bookmediasearchservice.dto;
+package bookmediasearchservice.bookmediasearchservice.dto.itune;
+
+import bookmediasearchservice.bookmediasearchservice.dto.itune.Entity;
 
 import java.util.Collections;
 import java.util.EnumSet;
@@ -30,7 +32,7 @@ import java.util.Set;
 public enum Media {
 
 	MOVIE("movie", 
-			EnumSet.of(Entity.MOVIE_ARTIST, Entity.MOVIE), 
+			EnumSet.of(Entity.MOVIE_ARTIST, Entity.MOVIE),
 			EnumSet.of(Attribute.ACTOR_TERM, Attribute.GENRE_INDEX, Attribute.ARTIST_TERM, Attribute.SHORT_FILM_TERM, Attribute.PRODUCER_TERM, Attribute.RATING_TERM, Attribute.DIRECTOR_TERM, Attribute.RELEASE_YEAR_TERM, Attribute.FEATURE_FILM_TERM, Attribute.MOVIE_ARTIST_TERM, Attribute.MOVIE_TERM, Attribute.RATING_INDEX, Attribute.DESCRIPTION_TERM)), 
 	PODCAST("podcast", 
 			EnumSet.of(Entity.PODCAST_AUTHOR, Entity.PODCAST), 

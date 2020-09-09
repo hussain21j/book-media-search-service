@@ -25,11 +25,11 @@ public class SearchingService {
     public List<SearchResponse> searchMedia(String name) {
         log.info("searchCount :"+searchCount);
 
-        GoogleBookService googleBookService = new GoogleBookService(new GoogleServiceConverter(), googleBookServiceUrl, searchCount);
+        GoogleBookService googleBookService = GoogleBookService.of(GoogleServiceConverter.of(), googleBookServiceUrl, searchCount);
         ITuneService ituneService = new ITuneService(new ITunerServiceConverter(), iTuneServiceUrl, searchCount);
         List<SearchService> searchServices = Arrays.asList(googleBookService, ituneService);
 
-        SearchProcessor processor = new SearchProcessor(searchServices, name);
+        SearchProcessor processor = SearchProcessor.of(searchServices, name);
 
         return processor.processSearch();
 

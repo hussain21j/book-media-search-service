@@ -13,7 +13,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-package bookmediasearchservice.bookmediasearchservice.dto;
+package bookmediasearchservice.bookmediasearchservice.dto.itune;
 
 import java.util.Collections;
 import java.util.EnumSet;

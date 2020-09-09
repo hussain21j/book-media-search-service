@@ -11,9 +11,9 @@ import java.util.List;
 
 
 /**
- * The controller for the application
- *
- * @author Tayab Hussain
+ * <p>
+ * The controller for the search services
+ * </p>
  */
 @RestController
 @RequestMapping("searchservice")
@@ -25,9 +25,9 @@ public class SearchController {
 
     @CrossOrigin
     @GetMapping(value = "/search", produces = "application/json")
-    public List<SearchResponse> getAllMessages(@RequestParam(required = true) String name) {
-        log.info("name passed is :"+name);
-        List<SearchResponse> responseList=  searchingService.searchMedia(name);
+    public List<SearchResponse> getAllMessages(@RequestParam(required = true) String text) {
+        log.info("text to be searched  :"+text);
+        List<SearchResponse> responseList=  searchingService.searchMedia(text);
         return responseList;
     }
 }

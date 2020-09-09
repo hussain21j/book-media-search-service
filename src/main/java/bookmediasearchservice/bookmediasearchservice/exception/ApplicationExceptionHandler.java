@@ -12,10 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * <p>
+ * The single place exception handler for all types of exceptions
+ * </p>
+ */
 @ControllerAdvice
 @RestController
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
-    private String APPLICATION_ERROR = "Application error, something went wrong in the API";
+    private static final String APPLICATION_ERROR = "Application error, something went wrong in the API";
 
     /**
      * Global Runtime exception mapper when no error exception matches

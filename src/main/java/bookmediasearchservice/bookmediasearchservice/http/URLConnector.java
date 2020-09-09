@@ -15,6 +15,8 @@
 */
 package bookmediasearchservice.bookmediasearchservice.http;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,21 +29,32 @@ import java.nio.charset.StandardCharsets;
 /**
  * Default {@link Connector} implementation using {@link URLConnection}.
  */
+@Slf4j
 public class URLConnector implements Connector, Serializable {
 
 	private static final long serialVersionUID = 1476515538667L;
 
 	/**
-	 * Reusable, threadsafe {@link URLConnector} instance.
+	 * Reusable URLConnector object
 	 */
 	public static final URLConnector INSTANCE = new URLConnector();
 
+	/**
+	 * Private constructor to deny object creation
+	 */
+	private URLConnector() {}
+
+	public static URLConnector getInstance() {
+		return INSTANCE;
+	}
 	/**
 	 * {@inheritDoc}
 	 * 
 	 * @throws MalformedURLException as thrown by {@link URL#URL(String)} 
 	 */
 	public String get(String link) throws IOException {
+
+
 		URL url = new URL(link);
 		try (BufferedReader in = new BufferedReader(
 				new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8))) {

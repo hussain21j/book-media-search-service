@@ -18,15 +18,22 @@ package bookmediasearchservice.bookmediasearchservice.service;
 
 import bookmediasearchservice.bookmediasearchservice.converters.ServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.dto.*;
+import bookmediasearchservice.bookmediasearchservice.dto.itune.ITuneSearchResponse;
+import bookmediasearchservice.bookmediasearchservice.dto.itune.Lang;
+import bookmediasearchservice.bookmediasearchservice.dto.itune.Media;
 import bookmediasearchservice.bookmediasearchservice.http.Connector;
 import bookmediasearchservice.bookmediasearchservice.http.URLConnector;
+import com.google.common.base.Stopwatch;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Request object for the iTunes Search API.
@@ -59,18 +66,24 @@ public class ITuneService implements SearchService {
 	@Override
 	public List<SearchResponse> search(String text) {
 		this.term = text;
+		List<SearchResponse> responses;
 		Connector connector = URLConnector.INSTANCE;
+		Stopwatch stopwatch = Stopwatch.createUnstarted().start();
 		if (connector == null) {
 			throw new IllegalArgumentException("connector can not be null");
 		}
 		try {
 			String url = buildURL();
 			String response = connector.get(url);
-			log.trace("{} -> {}", url, response);
-			return this.serviceConverter.convert(ITuneSearchResponse.READER.readValue(response));
+			responses =  this.serviceConverter.convert(ITuneSearchResponse.READER.readValue(response));
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			log.error("connection to ITune service with url {} could not be made", this.apiEndpoint);
+			responses = Collections.emptyList();
+		} finally {
+			stopwatch.stop();
+			log.info("time elapsed in search of ITune service {} millisecond", stopwatch.elapsed(TimeUnit.MILLISECONDS));
 		}
+		return responses;
 	}
 
 
