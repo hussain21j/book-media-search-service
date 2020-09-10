@@ -25,7 +25,7 @@ public class GoogleServiceConverter implements ServiceConverter {
         for(Items item: response.getItems()) {
             targetList.add(SearchResponse.builder()
                     .title(item.getVolumeInfo().getTitle())
-                    .type(SearchItemType.BOOK.getType())
+                    .type(SearchItemType.BOOK)
                     .authorsOrArtists(getAuthors(item.getVolumeInfo().getAuthors()))
                     .information(item.getVolumeInfo().getDescription())
                     .build());

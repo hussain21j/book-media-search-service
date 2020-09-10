@@ -52,12 +52,9 @@ public class URLConnector implements Connector, Serializable {
 	 * 
 	 * @throws MalformedURLException as thrown by {@link URL#URL(String)} 
 	 */
-	public String get(String link) throws IOException {
-
-
-		URL url = new URL(link);
+	public String get(URLConnection connection) throws IOException {
 		try (BufferedReader in = new BufferedReader(
-				new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8))) {
+				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
 			StringBuilder sb = new StringBuilder();
 			String line;
 			while ((line = in.readLine()) != null) {

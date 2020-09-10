@@ -22,7 +22,7 @@ public class ITunerServiceConverter implements ServiceConverter {
         for(Result result: response.getResults()) {
             targetList.add(SearchResponse.builder()
                     .title(result.getTrackName())
-                    .type(SearchItemType.ALBUM.getType())
+                    .type(SearchItemType.ALBUM)
                     .authorsOrArtists(getArtists(result.getArtistName()))
                     .information(result.getCollectionName())
                     .build());

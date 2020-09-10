@@ -1,5 +1,6 @@
 package bookmediasearchservice.bookmediasearchservice.dto;
 
+import bookmediasearchservice.bookmediasearchservice.dto.itune.SearchItemType;
 import lombok.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 public class SearchResponse {
     String title;
-    String type;
+    SearchItemType type;
     List<String> authorsOrArtists;
     String information;
 }

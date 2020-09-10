@@ -16,6 +16,7 @@
 package bookmediasearchservice.bookmediasearchservice.http;
 
 import java.io.IOException;
+import java.net.URLConnection;
 
 /**
  * Interface wrapping HTTP connection logic
@@ -33,6 +34,6 @@ public interface Connector {
 	 * @throws IOException
 	 *             if a problem occurred with the connection
 	 */
-	public String get(String link) throws IOException;
+	public String get(URLConnection connection) throws IOException;
 
 }

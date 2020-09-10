@@ -16,7 +16,7 @@ public class ITuneServiceTest {
         //given
         String url = "https://itunes.apple.com/search?";
         int searchResultCount = 5;
-        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount);
+        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount, 1000, 1000);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         //when
@@ -31,7 +31,10 @@ public class ITuneServiceTest {
         //given
         String url = "https://itunes.appplee.com/search?";
         int searchResultCount = 5;
-        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount);
+        ITuneService service = new ITuneService(new ITunerServiceConverter(),
+                url, searchResultCount,
+                1000,
+                1000);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         //when
@@ -39,6 +42,21 @@ public class ITuneServiceTest {
         //then
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses).isEmpty();
+    }
+
+    @Test
+    public void searchMusic_ShouldNotTimeOut() {
+        //given
+        String url = "https://itunes.apple.com/search?";
+        int searchResultCount = 5;
+        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount, 1000, 1000);
+        ReflectionTestUtils.setField(service, "apiEndpoint", url);
+        ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
+        //when
+        List<SearchResponse>  responses =  service.search("Hello world");
+        //then
+        Assertions.assertThat(responses).isNotNull();
+        Assertions.assertThat(responses.size()).isEqualTo(5);
     }
 
 

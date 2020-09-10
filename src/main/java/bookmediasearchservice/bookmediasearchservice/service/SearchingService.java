@@ -14,19 +14,23 @@ import java.util.List;
 @Slf4j
 public class SearchingService {
     @Value("${count.search.result}")
-    int searchCount;
+    private int searchCount;
 
     @Value("${google.book.search.service.endpoint}")
-    String googleBookServiceUrl;
+    private String googleBookServiceUrl;
 
     @Value("${iTune,search.service.endpoint}")
-    String iTuneServiceUrl;
+    private String iTuneServiceUrl;
+
+    @Value("${service.connection.time.out}")
+    private int connectionTimeOut;
+
+    @Value("${service.read.time.out}")
+    private int readTimeOut;
 
     public List<SearchResponse> searchMedia(String name) {
-        log.info("searchCount :"+searchCount);
-
-        GoogleBookService googleBookService = GoogleBookService.of(GoogleServiceConverter.of(), googleBookServiceUrl, searchCount);
-        ITuneService ituneService = new ITuneService(new ITunerServiceConverter(), iTuneServiceUrl, searchCount);
+        GoogleBookService googleBookService = GoogleBookService.of(GoogleServiceConverter.of(), googleBookServiceUrl, searchCount, connectionTimeOut, readTimeOut);
+        ITuneService ituneService = new ITuneService(new ITunerServiceConverter(), iTuneServiceUrl, searchCount, connectionTimeOut, readTimeOut);
         List<SearchService> searchServices = Arrays.asList(googleBookService, ituneService);
 
         SearchProcessor processor = SearchProcessor.of(searchServices, name);

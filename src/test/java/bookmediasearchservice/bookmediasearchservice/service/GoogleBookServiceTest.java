@@ -15,10 +15,12 @@ public class GoogleBookServiceTest {
         String url = "https://www.googleapis.com/books/v1/volumes?";
         int searchResultCount = 5;
 
-        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount);
+        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount, 1000, 1000);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
+        //when
         List<SearchResponse> responses = service.search("java complete reference");
+        //then
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses.size()).isGreaterThan(0);
         Assertions.assertThat(responses.size()).isEqualTo(5);
@@ -30,7 +32,7 @@ public class GoogleBookServiceTest {
         String url = "https://www.gooogleeeapis.com/books/v1/volumes?";
         int searchResultCount = 5;
 
-        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount);
+        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount, 1000, 1000);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         List<SearchResponse> responses = service.search("java complete reference");
@@ -38,13 +40,24 @@ public class GoogleBookServiceTest {
         Assertions.assertThat(responses).isEmpty();
     }
 
-    public void shouldConnectionTimeOut() {
+    @Test
+    public void shouldGetEmptyListResponseAsTimeOut() {
+        //given
+        String url = "https://www.googleapis.com/books/v1/volumes?";
+        int searchResultCount = 5;
 
+        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(),
+                url,
+                searchResultCount,
+                1,
+                1);
+        ReflectionTestUtils.setField(service, "apiEndpoint", url);
+        ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
+        //when
+        List<SearchResponse> responses = service.search("java complete reference");
+        //then
+        Assertions.assertThat(responses).isNotNull();
+        Assertions.assertThat(responses).isEmpty();
     }
-
-    public void shouldReadTimeOut() {
-
-    }
-
 
 }

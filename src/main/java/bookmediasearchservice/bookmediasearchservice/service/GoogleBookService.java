@@ -1,6 +1,5 @@
 package bookmediasearchservice.bookmediasearchservice.service;
 
-import bookmediasearchservice.bookmediasearchservice.ApplicationConstants;
 import bookmediasearchservice.bookmediasearchservice.converters.ServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 import bookmediasearchservice.bookmediasearchservice.dto.book.BookSearchResponse;
@@ -12,21 +11,24 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static bookmediasearchservice.bookmediasearchservice.ApplicationConstants.*;
-
+/**
+ * Searching service in the Google Book API
+ * As mentioned in the assignment document, documentation for the iTune service in following lin
+ * @see <a href="https://developers.google.com/books/docs/v1/reference/volumes/list ">Google Book API</a>
+ */
 @Slf4j
 @AllArgsConstructor(staticName = "of")
 public class GoogleBookService implements SearchService {
     private ServiceConverter serviceConverter;
     private String apiEndpoint;
     private int resultCount;
+    private int connectionTimeOut;
+    private int readTimeOut;
 
     /**
      * Search in the google book service
@@ -39,18 +41,20 @@ public class GoogleBookService implements SearchService {
         Stopwatch stopwatch = Stopwatch.createUnstarted().start();
         try{
             final String uri = buildURL(text);
-            //todo: make this resttemplate global a bean managed class
             RestTemplate restTemplate = new RestTemplateBuilder()
-                    .setConnectTimeout(Duration.ofMillis(SERVICE_CONNECTION_TIME_OUT))
-                    .setReadTimeout(Duration.ofMillis(SERVICE_READ_TIME_OUT)).build();
+                    .setConnectTimeout(Duration.ofMillis(connectionTimeOut))
+                    .setReadTimeout(Duration.ofMillis(readTimeOut)).build();
 
             String result = restTemplate.getForObject(uri, String.class);
             responses = this.serviceConverter.convert(BookSearchResponse.READER.readValue(result));
         } catch (JsonProcessingException e) {
             log.error("the json response could not be parsed");
+            e.printStackTrace();
             responses = Collections.emptyList();
-        } catch (RestClientException e)  {
+        }
+        catch (RestClientException e)  {
             log.error("Response could not be received using URL {} in specified time", this.apiEndpoint);
+            e.printStackTrace();
             responses = Collections.emptyList();
         } finally {
             stopwatch.stop();

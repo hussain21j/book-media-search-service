@@ -28,23 +28,24 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Request object for the iTunes Search API.
- * 
- * @see <a href="https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching">Search API</a>
+ * Searching service in the iTune API
+ * As mentioned in the assignment document, documentation for the iTune service in following lin
+ * @see <a href="https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching">iTune Search API</a>
  */
 @Slf4j
 public class ITuneService implements SearchService {
 	private ServiceConverter serviceConverter;
 	private String apiEndpoint;
 	private int resultCount;
+	private int connectionTimeOut;
+	private int readTimeOut;
 
 	private String term;
 	private Lang lang;
@@ -53,15 +54,17 @@ public class ITuneService implements SearchService {
 
 
 
-	ITuneService(ServiceConverter serviceConverter, String apiEndpoint, int resultCount) {
+	ITuneService(ServiceConverter serviceConverter, String apiEndpoint, int resultCount, int connectionTimeOut, int readTimeOut) {
 		this.serviceConverter = serviceConverter;
 		this.apiEndpoint = apiEndpoint;
 		this.resultCount = resultCount;
+		this.connectionTimeOut = connectionTimeOut;
+		this.readTimeOut = readTimeOut;
 	}
 	/**
 	 * search the iTune service
-	 * @param text
-	 * @return
+	 * @param text - text to be search
+	 * @return List of searches in the form of {@link SearchResponse}
 	 */
 	@Override
 	public List<SearchResponse> search(String text) {
@@ -73,8 +76,7 @@ public class ITuneService implements SearchService {
 			throw new IllegalArgumentException("connector can not be null");
 		}
 		try {
-			String url = buildURL();
-			String response = connector.get(url);
+			String response = connector.get(getURLConnection());
 			responses =  this.serviceConverter.convert(ITuneSearchResponse.READER.readValue(response));
 		} catch (IOException e) {
 			log.error("connection to ITune service with url {} could not be made", this.apiEndpoint);
@@ -89,21 +91,16 @@ public class ITuneService implements SearchService {
 
 
 	/**
-	 * Create the request URL for this {@link ITuneService}
-	 * 
-	 * @return full request URL matching this {@link ITuneService}
-	 * @throws IllegalStateException
-	 *             if no term is set in this {@link ITuneService}
+	 * @return full request URL for iTune service
 	 */
-	public String buildURL() {
+	private String buildURL() {
 		return new StringBuilder(apiEndpoint).append(termParam()).append(limitParam()).append(langParam())
 				.append(versionParam()).toString();
 	}
 
 	/**
 	 * @return "term=xxxx"
-	 * @throws IllegalStateException
-	 *             if term is empty or blank
+	 * @throws IllegalStateException if term is empty or blank
 	 */
 	private String termParam() {
 		if (term == null) {
@@ -122,6 +119,17 @@ public class ITuneService implements SearchService {
 	}
 
 
+	/**
+	 * makes the URLConnection with url and timeout settings
+	 * @return
+	 * @throws IOException
+	 */
+	private URLConnection getURLConnection() throws IOException {
+		URLConnection connection  = (new URL(buildURL())).openConnection();
+		connection.setConnectTimeout(this.connectionTimeOut);
+		connection.setReadTimeout(this.readTimeOut);
+		return connection;
+	}
 
 
 	/**
@@ -135,7 +143,7 @@ public class ITuneService implements SearchService {
 	}
 
 	/**
-	 * @return "&lang=XX" or empty {@link String}
+	 * @return "&lang=XX" or empty
 	 */
 	private String langParam() {
 		if (lang != null) {
@@ -145,7 +153,7 @@ public class ITuneService implements SearchService {
 	}
 
 	/**
-	 * @return "&version=XX" or empty {@link String}
+	 * @return "&version=XX" or empty
 	 */
 	private String versionParam() {
 		if (version != null) {
