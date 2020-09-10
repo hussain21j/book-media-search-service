@@ -32,37 +32,39 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class URLConnector implements Connector, Serializable {
 
-	private static final long serialVersionUID = 1476515538667L;
+    private static final long serialVersionUID = 1476515538667L;
 
-	/**
-	 * Reusable URLConnector object
-	 */
-	public static final URLConnector INSTANCE = new URLConnector();
+    /**
+     * Reusable URLConnector object
+     */
+    public static final URLConnector INSTANCE = new URLConnector();
 
-	/**
-	 * Private constructor to deny object creation
-	 */
-	private URLConnector() {}
+    /**
+     * Private constructor to deny object creation
+     */
+    private URLConnector() {
+    }
 
-	public static URLConnector getInstance() {
-		return INSTANCE;
-	}
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @throws MalformedURLException as thrown by {@link URL#URL(String)} 
-	 */
-	public String get(URLConnection connection) throws IOException {
-		try (BufferedReader in = new BufferedReader(
-				new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = in.readLine()) != null) {
-				sb.append(line);
-				sb.append(System.lineSeparator());
-			}
-			return sb.toString().trim();
-		}
-	}
+    public static URLConnector getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws MalformedURLException as thrown by {@link URL#URL(String)}
+     */
+    public String get(URLConnection connection) throws IOException {
+        try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+            }
+            return sb.toString().trim();
+        }
+    }
 
 }

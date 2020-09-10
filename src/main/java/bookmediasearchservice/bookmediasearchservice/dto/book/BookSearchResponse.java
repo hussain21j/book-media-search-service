@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ public class BookSearchResponse implements ProviderSearchResponse {
     /**
      * mapper to transform json string to object
      */
+    //todo : move this to service
     public static final ObjectReader READER = new ObjectMapper().readerFor(BookSearchResponse.class);
 
     public String getKind() {
@@ -48,6 +48,7 @@ public class BookSearchResponse implements ProviderSearchResponse {
         return items;
     }
 
+    //todo: check this is redundant
     public void setItems(List<Items> items) {
         this.items.clear();
         if (items != null) {

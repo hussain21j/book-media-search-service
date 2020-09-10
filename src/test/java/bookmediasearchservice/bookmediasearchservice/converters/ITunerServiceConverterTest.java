@@ -17,7 +17,7 @@ class ITunerServiceConverterTest {
         //given
         List<Result> results = Arrays.asList(getResultObject("the way i am", "eminem", "the way i am"));
         ITuneSearchResponse iTuneSearchResponse = getITuneSearchResponseObject(1, results);
-        ITunerServiceConverter iTunerServiceConverter= new ITunerServiceConverter();
+        ITunerServiceConverter iTunerServiceConverter = new ITunerServiceConverter();
         //when
         List<SearchResponse> responses = iTunerServiceConverter.convert(iTuneSearchResponse);
         //then
@@ -30,7 +30,7 @@ class ITunerServiceConverterTest {
         //given
         List<Result> results = Arrays.asList(getResultObject("the way i am", null, "the way i am"));
         ITuneSearchResponse iTuneSearchResponse = getITuneSearchResponseObject(1, results);
-        ITunerServiceConverter iTunerServiceConverter= new ITunerServiceConverter();
+        ITunerServiceConverter iTunerServiceConverter = new ITunerServiceConverter();
         //when
         List<SearchResponse> responses = iTunerServiceConverter.convert(iTuneSearchResponse);
         //then

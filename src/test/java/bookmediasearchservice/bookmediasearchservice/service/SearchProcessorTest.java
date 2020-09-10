@@ -22,10 +22,10 @@ class SearchProcessorTest {
         List<SearchService> services = Arrays.asList(GoogleBookService.of(
                 GoogleServiceConverter.of(),
                 googleBookEndpoint,
-                resultLimit, 1000, 1000),
+                resultLimit, 1000, 1000, null),
                 new ITuneService(new ITunerServiceConverter(),
                         iTuneEndpoint,
-                        resultLimit, 1000, 1000));
+                        resultLimit, 1000, 1000, null));
         SearchProcessor processor = SearchProcessor.of(services, "hello world");
         //when
         List<SearchResponse> searchResponses = processor.processSearch();
@@ -44,10 +44,10 @@ class SearchProcessorTest {
         List<SearchService> services = Arrays.asList(GoogleBookService.of(
                 GoogleServiceConverter.of(),
                 googleBookEndpoint,
-                resultLimit, 1000, 1000),
+                resultLimit, 1000, 1000, null),
                 new ITuneService(new ITunerServiceConverter(),
                         wrongITuneEndpoint,
-                        resultLimit, 1000, 1000));
+                        resultLimit, 1000, 1000, null));
         SearchProcessor processor = SearchProcessor.of(services, "hello world");
         //when
         List<SearchResponse> searchResponses = processor.processSearch();
@@ -66,10 +66,10 @@ class SearchProcessorTest {
         List<SearchService> services = Arrays.asList(GoogleBookService.of(
                 GoogleServiceConverter.of(),
                 googleBookEndpoint,
-                resultLimit, 1000, 1000),
+                resultLimit, 1000, 1000, null),
                 new ITuneService(new ITunerServiceConverter(),
                         iTuneEndpoint,
-                        resultLimit, 1000, 1000));
+                        resultLimit, 1000, 1000, null));
         SearchProcessor processor = SearchProcessor.of(services, "hello world");
         //when
         List<SearchResponse> searchResponses = processor.processSearch();
@@ -87,8 +87,8 @@ class SearchProcessorTest {
 
     private boolean isInAlphabeticOrder(List<SearchResponse> responseList, List<String> sortedTitle) {
         boolean isTitleEqual = true;
-        for(int i=0; i< responseList.size(); i++) {
-            if(!responseList.get(i).getTitle().equals(sortedTitle.get(i)))
+        for (int i = 0; i < responseList.size(); i++) {
+            if (!responseList.get(i).getTitle().equals(sortedTitle.get(i)))
                 isTitleEqual = false;
         }
         return isTitleEqual;

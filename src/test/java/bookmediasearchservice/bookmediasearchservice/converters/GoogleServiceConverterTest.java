@@ -7,12 +7,8 @@ import bookmediasearchservice.bookmediasearchservice.dto.book.VolumeInfo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GoogleServiceConverterTest {
 
@@ -68,12 +64,12 @@ class GoogleServiceConverterTest {
     }
 
     private VolumeInfo getVolumeInfoObject(String title,
-            String subtitle,
-            List<String> authors,
-            String publisher,
-            String publishedDate,
-            String description,
-            String infoLink) {
+                                           String subtitle,
+                                           List<String> authors,
+                                           String publisher,
+                                           String publishedDate,
+                                           String description,
+                                           String infoLink) {
 
         return VolumeInfo.of(title, subtitle, authors, publisher, publishedDate, description, infoLink);
     }

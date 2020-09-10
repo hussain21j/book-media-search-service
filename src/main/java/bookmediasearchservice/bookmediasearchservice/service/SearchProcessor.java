@@ -19,10 +19,12 @@ public class SearchProcessor {
 
     /**
      * Makes the search in all the search providers , and sort the result
+     *
      * @return
      */
     public List<SearchResponse> processSearch() {
         ArrayList<SearchResponse> responses = new ArrayList<>();
+        //todo: try parllel stream
         searchServices.forEach(searchService -> {
             responses.addAll(searchService.search(textToSearch));
         });

@@ -1,12 +1,11 @@
 package bookmediasearchservice.bookmediasearchservice.converters;
 
+import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 import bookmediasearchservice.bookmediasearchservice.dto.itune.ITuneSearchResponse;
 import bookmediasearchservice.bookmediasearchservice.dto.itune.Result;
 import bookmediasearchservice.bookmediasearchservice.dto.itune.SearchItemType;
-import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,12 +18,11 @@ public class ITunerServiceConverter implements ServiceConverter {
     public List<SearchResponse> convert(ProviderSearchResponse providerSearchResponse) {
         ITuneSearchResponse response = (ITuneSearchResponse) providerSearchResponse;
         List<SearchResponse> targetList = new ArrayList<>();
-        for(Result result: response.getResults()) {
+        for (Result result : response.getResults()) {
             targetList.add(SearchResponse.builder()
                     .title(result.getTrackName())
                     .type(SearchItemType.ALBUM)
                     .authorsOrArtists(getArtists(result.getArtistName()))
-                    .information(result.getCollectionName())
                     .build());
         }
         return targetList;
@@ -32,7 +30,7 @@ public class ITunerServiceConverter implements ServiceConverter {
 
     public List<String> getArtists(String artist) {
         List<String> artists = new ArrayList<>();
-        if(!Objects.isNull(artist))
+        if (!Objects.isNull(artist))
             artists.add(artist);
         return artists;
     }

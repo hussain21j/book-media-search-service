@@ -57,7 +57,6 @@ class SearchControllerTest {
                 .title("title")
                 .type(SearchItemType.BOOK)
                 .authorsOrArtists(Arrays.asList("artist-1"))
-                .information("info")
                 .build();
     }
 

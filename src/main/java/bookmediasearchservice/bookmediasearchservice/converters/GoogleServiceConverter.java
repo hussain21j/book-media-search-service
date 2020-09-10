@@ -1,11 +1,9 @@
 package bookmediasearchservice.bookmediasearchservice.converters;
 
-import bookmediasearchservice.bookmediasearchservice.dto.itune.SearchItemType;
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 import bookmediasearchservice.bookmediasearchservice.dto.book.BookSearchResponse;
 import bookmediasearchservice.bookmediasearchservice.dto.book.Items;
-import com.google.common.annotations.VisibleForTesting;
-import lombok.AllArgsConstructor;
+import bookmediasearchservice.bookmediasearchservice.dto.itune.SearchItemType;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -18,16 +16,16 @@ import java.util.Objects;
  */
 @NoArgsConstructor(staticName = "of")
 public class GoogleServiceConverter implements ServiceConverter {
+    //todo: handle exception
     @Override
     public List<SearchResponse> convert(ProviderSearchResponse providerSearchResponse) {
         BookSearchResponse response = (BookSearchResponse) providerSearchResponse;
         List<SearchResponse> targetList = new ArrayList<>();
-        for(Items item: response.getItems()) {
+        for (Items item : response.getItems()) {
             targetList.add(SearchResponse.builder()
                     .title(item.getVolumeInfo().getTitle())
                     .type(SearchItemType.BOOK)
                     .authorsOrArtists(getAuthors(item.getVolumeInfo().getAuthors()))
-                    .information(item.getVolumeInfo().getDescription())
                     .build());
         }
         return targetList;
@@ -35,7 +33,7 @@ public class GoogleServiceConverter implements ServiceConverter {
 
     private List<String> getAuthors(List<String> writers) {
         List<String> writerList = new ArrayList<>();
-        if(!Objects.isNull(writers) && writers.size() > 0) {
+        if (!Objects.isNull(writers) && writers.size() > 0) {
             writerList.addAll(writers);
         }
         return writerList;

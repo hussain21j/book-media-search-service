@@ -3,7 +3,9 @@ package bookmediasearchservice.bookmediasearchservice.service;
 import bookmediasearchservice.bookmediasearchservice.converters.GoogleServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.converters.ITunerServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +30,13 @@ public class SearchingService {
     @Value("${service.read.time.out}")
     private int readTimeOut;
 
+    @Autowired
+    MeterRegistry meterRegistry;
+
+
     public List<SearchResponse> searchMedia(String name) {
-        GoogleBookService googleBookService = GoogleBookService.of(GoogleServiceConverter.of(), googleBookServiceUrl, searchCount, connectionTimeOut, readTimeOut);
-        ITuneService ituneService = new ITuneService(new ITunerServiceConverter(), iTuneServiceUrl, searchCount, connectionTimeOut, readTimeOut);
+        GoogleBookService googleBookService = GoogleBookService.of(GoogleServiceConverter.of(), googleBookServiceUrl, searchCount, connectionTimeOut, readTimeOut, meterRegistry);
+        ITuneService ituneService = new ITuneService(new ITunerServiceConverter(), iTuneServiceUrl, searchCount, connectionTimeOut, readTimeOut, meterRegistry);
         List<SearchService> searchServices = Arrays.asList(googleBookService, ituneService);
 
         SearchProcessor processor = SearchProcessor.of(searchServices, name);

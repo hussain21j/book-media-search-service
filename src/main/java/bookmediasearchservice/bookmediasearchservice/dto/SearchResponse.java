@@ -26,5 +26,4 @@ public class SearchResponse {
     String title;
     SearchItemType type;
     List<String> authorsOrArtists;
-    String information;
 }

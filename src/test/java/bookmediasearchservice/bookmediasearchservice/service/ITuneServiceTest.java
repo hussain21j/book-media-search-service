@@ -16,11 +16,11 @@ public class ITuneServiceTest {
         //given
         String url = "https://itunes.apple.com/search?";
         int searchResultCount = 5;
-        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount, 1000, 1000);
+        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount, 1000, 1000, null);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         //when
-        List<SearchResponse>  responses =  service.search("Hello world");
+        List<SearchResponse> responses = service.search("Hello world");
         //then
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses.size()).isEqualTo(5);
@@ -34,11 +34,12 @@ public class ITuneServiceTest {
         ITuneService service = new ITuneService(new ITunerServiceConverter(),
                 url, searchResultCount,
                 1000,
-                1000);
+                1000,
+                null);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         //when
-        List<SearchResponse>  responses =  service.search("42 mile stone");
+        List<SearchResponse> responses = service.search("42 mile stone");
         //then
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses).isEmpty();
@@ -49,16 +50,15 @@ public class ITuneServiceTest {
         //given
         String url = "https://itunes.apple.com/search?";
         int searchResultCount = 5;
-        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount, 1000, 1000);
+        ITuneService service = new ITuneService(new ITunerServiceConverter(), url, searchResultCount, 1000, 1000, null);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         //when
-        List<SearchResponse>  responses =  service.search("Hello world");
+        List<SearchResponse> responses = service.search("Hello world");
         //then
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses.size()).isEqualTo(5);
     }
-
 
 
 }

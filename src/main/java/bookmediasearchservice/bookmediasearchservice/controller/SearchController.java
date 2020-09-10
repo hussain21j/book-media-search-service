@@ -3,6 +3,7 @@ package bookmediasearchservice.bookmediasearchservice.controller;
 
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 import bookmediasearchservice.bookmediasearchservice.service.SearchingService;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("searchservice")
 @Slf4j
+@Timed("SearchController")
 public class SearchController {
 
     @Autowired

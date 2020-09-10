@@ -15,7 +15,7 @@ public class GoogleBookServiceTest {
         String url = "https://www.googleapis.com/books/v1/volumes?";
         int searchResultCount = 5;
 
-        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount, 1000, 1000);
+        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount, 1000, 1000, null);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         //when
@@ -32,7 +32,7 @@ public class GoogleBookServiceTest {
         String url = "https://www.gooogleeeapis.com/books/v1/volumes?";
         int searchResultCount = 5;
 
-        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount, 1000, 1000);
+        GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount, 1000, 1000, null);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         List<SearchResponse> responses = service.search("java complete reference");
@@ -50,7 +50,7 @@ public class GoogleBookServiceTest {
                 url,
                 searchResultCount,
                 1,
-                1);
+                1, null);
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
         //when
