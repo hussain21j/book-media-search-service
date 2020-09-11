@@ -35,7 +35,8 @@ can be found at  url url  `http://localhost:8080/actuator/health` [actuator heal
 * metrics of http calls can be found on url `http://localhost:8080/actuator/metrics/http.server.requests` [http health check]([Search API](http://localhost:8080/actuator/metrics/http.server.requests))
 * Metrics of the search end point can be found at url `http://localhost:8080/actuator/prometheus` and search with word `SearchController`
 * Metrics of Upstream service response time found at `http://localhost:8080/actuator/prometheus` search with `google_book_search_service` for Google Book Service and `itune_media_search_service` for ITune search
-* NOTE - Please change the port on above URLS if port is different than 8080 
+* NOTE - Remember you must hit the search endpoint at least once to generate the metrics else noting would be found on the above urls
+* NOTE - Please change the port on above URLS if you start the application on different port than 8080 
 
 ### Design , scalability and flexibility of the solution
 * Application can be run on any environment, just the update the external properties file for the environment and done
