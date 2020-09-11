@@ -7,6 +7,7 @@ import java.util.List;
 public interface SearchService {
     /**
      * searches the text in the service provider
+     *
      * @param text
      * @return
      */

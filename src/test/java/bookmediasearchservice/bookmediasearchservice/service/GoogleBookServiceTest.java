@@ -2,8 +2,10 @@ package bookmediasearchservice.bookmediasearchservice.service;
 
 import bookmediasearchservice.bookmediasearchservice.converters.GoogleServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
+import bookmediasearchservice.bookmediasearchservice.util.TestTimer;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
@@ -16,10 +18,12 @@ public class GoogleBookServiceTest {
         int searchResultCount = 5;
 
         GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount, 1000, 1000, null);
-        ReflectionTestUtils.setField(service, "apiEndpoint", url);
-        ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
+        GoogleBookService serviceSpy = Mockito.spy(service);
+        Mockito.doReturn(new TestTimer()).when(serviceSpy).getTimer();
+        ReflectionTestUtils.setField(serviceSpy, "apiEndpoint", url);
+        ReflectionTestUtils.setField(serviceSpy, "resultCount", searchResultCount);
         //when
-        List<SearchResponse> responses = service.search("java complete reference");
+        List<SearchResponse> responses = serviceSpy.search("java complete reference");
         //then
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses.size()).isGreaterThan(0);
@@ -33,9 +37,12 @@ public class GoogleBookServiceTest {
         int searchResultCount = 5;
 
         GoogleBookService service = GoogleBookService.of(GoogleServiceConverter.of(), url, searchResultCount, 1000, 1000, null);
+        GoogleBookService serviceSpy = Mockito.spy(service);
+        Mockito.doReturn(new TestTimer()).when(serviceSpy).getTimer();
+
         ReflectionTestUtils.setField(service, "apiEndpoint", url);
         ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
-        List<SearchResponse> responses = service.search("java complete reference");
+        List<SearchResponse> responses = serviceSpy.search("java complete reference");
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses).isEmpty();
     }
@@ -51,13 +58,15 @@ public class GoogleBookServiceTest {
                 searchResultCount,
                 1,
                 1, null);
-        ReflectionTestUtils.setField(service, "apiEndpoint", url);
-        ReflectionTestUtils.setField(service, "resultCount", searchResultCount);
+        GoogleBookService serviceSpy = Mockito.spy(service);
+        Mockito.doReturn(new TestTimer()).when(serviceSpy).getTimer();
+
+        ReflectionTestUtils.setField(serviceSpy, "apiEndpoint", url);
+        ReflectionTestUtils.setField(serviceSpy, "resultCount", searchResultCount);
         //when
-        List<SearchResponse> responses = service.search("java complete reference");
+        List<SearchResponse> responses = serviceSpy.search("java complete reference");
         //then
         Assertions.assertThat(responses).isNotNull();
         Assertions.assertThat(responses).isEmpty();
     }
-
 }

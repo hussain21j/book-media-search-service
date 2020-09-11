@@ -4,6 +4,8 @@ import bookmediasearchservice.bookmediasearchservice.converters.ServiceConverter
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
 import bookmediasearchservice.bookmediasearchservice.dto.book.BookSearchResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.base.Stopwatch;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -18,7 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static bookmediasearchservice.bookmediasearchservice.ApplicationConstants.GOOGLE_BOOK_SERVICE_METRIC;
+import static bookmediasearchservice.bookmediasearchservice.constants.ApplicationConstants.GOOGLE_BOOK_SERVICE_METRIC;
+
 
 /**
  * <p>
@@ -31,6 +34,11 @@ import static bookmediasearchservice.bookmediasearchservice.ApplicationConstants
 @Slf4j
 @AllArgsConstructor(staticName = "of")
 public class GoogleBookService implements SearchService {
+    /**
+     * mapper to transform response from google book search api to SearchResponse
+     */
+    public static final ObjectReader READER = new ObjectMapper().readerFor(BookSearchResponse.class);
+
     private ServiceConverter serviceConverter;
     private String apiEndpoint;
     private int resultCount;
@@ -46,7 +54,7 @@ public class GoogleBookService implements SearchService {
      */
     @Override
     public List<SearchResponse> search(String text) {
-        Timer timer = Timer.builder(GOOGLE_BOOK_SERVICE_METRIC).tag("method", "search").register(meterRegistry);
+        Timer timer = getTimer();
         List<SearchResponse> responses;
         Stopwatch stopwatch = Stopwatch.createUnstarted();
         try {
@@ -57,7 +65,7 @@ public class GoogleBookService implements SearchService {
             stopwatch.start();
             String result = restTemplate.getForObject(uri, String.class);
             stopwatch.stop();
-            responses = this.serviceConverter.convert(BookSearchResponse.READER.readValue(result));
+            responses = this.serviceConverter.convert(READER.readValue(result));
         } catch (JsonProcessingException e) {
             log.error("the json response could not be parsed");
             e.printStackTrace();
@@ -79,5 +87,15 @@ public class GoogleBookService implements SearchService {
     public String buildURL(String bookName) {
         return new StringBuilder(apiEndpoint).append("q=").append(bookName.trim()).append("&&").append("maxResults=" + resultCount).toString();
     }
+
+    /**
+     * gets the Metrics Timer object
+     *
+     * @return
+     */
+    public Timer getTimer() {
+        return Timer.builder(GOOGLE_BOOK_SERVICE_METRIC).tag("method", "search").register(meterRegistry);
+    }
+
 
 }

@@ -19,40 +19,23 @@ import bookmediasearchservice.bookmediasearchservice.converters.ProviderSearchRe
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <P>
+ * <p>
  * iTunes Search response POJO
  * </P>
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ITuneSearchResponse implements ProviderSearchResponse {
-
-	private int resultCount;
-	private final List<Result> results = new ArrayList<>();
-	//mapper to convert json string to the object
-	public static final ObjectReader READER = new ObjectMapper().readerFor(ITuneSearchResponse.class);
-
-	public int getResultCount() {
-		return resultCount;
-	}
-	public void setResultCount(int resultCount) {
-		this.resultCount = resultCount;
-	}
-
-	public List<Result> getResults() {
-		return results;
-	}
-
-	public void setResults(List<Result> results) {
-		this.results.clear();
-		if (results != null) {
-			this.results.addAll(results);
-		}
-	}
+    private int resultCount;
+    private List<Result> results = new ArrayList<>();
 }

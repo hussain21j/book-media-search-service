@@ -3,8 +3,11 @@ package bookmediasearchservice.bookmediasearchservice.service;
 import bookmediasearchservice.bookmediasearchservice.converters.GoogleServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.converters.ITunerServiceConverter;
 import bookmediasearchservice.bookmediasearchservice.dto.SearchResponse;
+import bookmediasearchservice.bookmediasearchservice.util.TestMeterRegistry;
+import bookmediasearchservice.bookmediasearchservice.util.TestTimer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -19,13 +22,15 @@ class SearchProcessorTest {
         String iTuneEndpoint = "https://itunes.apple.com/search?";
         String googleBookEndpoint = "https://www.googleapis.com/books/v1/volumes?";
 
-        List<SearchService> services = Arrays.asList(GoogleBookService.of(
-                GoogleServiceConverter.of(),
-                googleBookEndpoint,
-                resultLimit, 1000, 1000, null),
-                new ITuneService(new ITunerServiceConverter(),
-                        iTuneEndpoint,
-                        resultLimit, 1000, 1000, null));
+        GoogleBookService googleBookService = GoogleBookService.of(GoogleServiceConverter.of(), googleBookEndpoint, resultLimit, 1000, 1000, new TestMeterRegistry());
+        GoogleBookService googleBookServiceSpy = Mockito.spy(googleBookService);
+        Mockito.doReturn(new TestTimer()).when(googleBookServiceSpy).getTimer();
+
+        ITuneService iTuneService = new ITuneService(new ITunerServiceConverter(), iTuneEndpoint, resultLimit, 1000, 1000, new TestMeterRegistry());
+        ITuneService iTuneServiceSpy = Mockito.spy(iTuneService);
+        Mockito.doReturn(new TestTimer()).when(iTuneServiceSpy).getTimer();
+
+        List<SearchService> services = Arrays.asList(googleBookServiceSpy, iTuneServiceSpy);
         SearchProcessor processor = SearchProcessor.of(services, "hello world");
         //when
         List<SearchResponse> searchResponses = processor.processSearch();
@@ -41,13 +46,15 @@ class SearchProcessorTest {
         String wrongITuneEndpoint = "https://itunes.appplee.com.xyz/search?";
         String googleBookEndpoint = "https://www.googleapis.com/books/v1/volumes?";
 
-        List<SearchService> services = Arrays.asList(GoogleBookService.of(
-                GoogleServiceConverter.of(),
-                googleBookEndpoint,
-                resultLimit, 1000, 1000, null),
-                new ITuneService(new ITunerServiceConverter(),
-                        wrongITuneEndpoint,
-                        resultLimit, 1000, 1000, null));
+        GoogleBookService googleBookService = GoogleBookService.of(GoogleServiceConverter.of(), googleBookEndpoint, resultLimit, 1000, 1000, new TestMeterRegistry());
+        GoogleBookService googleBookServiceSpy = Mockito.spy(googleBookService);
+        Mockito.doReturn(new TestTimer()).when(googleBookServiceSpy).getTimer();
+
+        ITuneService iTuneService = new ITuneService(new ITunerServiceConverter(), wrongITuneEndpoint, resultLimit, 1000, 1000, new TestMeterRegistry());
+        ITuneService iTuneServiceSpy = Mockito.spy(iTuneService);
+        Mockito.doReturn(new TestTimer()).when(iTuneServiceSpy).getTimer();
+
+        List<SearchService> services = Arrays.asList(googleBookServiceSpy, iTuneServiceSpy);
         SearchProcessor processor = SearchProcessor.of(services, "hello world");
         //when
         List<SearchResponse> searchResponses = processor.processSearch();
@@ -63,13 +70,16 @@ class SearchProcessorTest {
         String iTuneEndpoint = "https://itunes.apple.com/search?";
         String googleBookEndpoint = "https://www.googleapis.com/books/v1/volumes?";
 
-        List<SearchService> services = Arrays.asList(GoogleBookService.of(
-                GoogleServiceConverter.of(),
-                googleBookEndpoint,
-                resultLimit, 1000, 1000, null),
-                new ITuneService(new ITunerServiceConverter(),
-                        iTuneEndpoint,
-                        resultLimit, 1000, 1000, null));
+        GoogleBookService googleBookService = GoogleBookService.of(GoogleServiceConverter.of(), googleBookEndpoint, resultLimit, 1000, 1000, new TestMeterRegistry());
+        GoogleBookService googleBookServiceSpy = Mockito.spy(googleBookService);
+        Mockito.doReturn(new TestTimer()).when(googleBookServiceSpy).getTimer();
+
+        ITuneService iTuneService = new ITuneService(new ITunerServiceConverter(), iTuneEndpoint, resultLimit, 1000, 1000, new TestMeterRegistry());
+        ITuneService iTuneServiceSpy = Mockito.spy(iTuneService);
+        Mockito.doReturn(new TestTimer()).when(iTuneServiceSpy).getTimer();
+
+
+        List<SearchService> services = Arrays.asList(googleBookServiceSpy, iTuneServiceSpy);
         SearchProcessor processor = SearchProcessor.of(services, "hello world");
         //when
         List<SearchResponse> searchResponses = processor.processSearch();

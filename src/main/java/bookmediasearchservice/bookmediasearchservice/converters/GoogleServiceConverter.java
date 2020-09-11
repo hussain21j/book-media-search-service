@@ -11,12 +11,13 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * <p>
  * converter for the BookSearchResponse {@link bookmediasearchservice.bookmediasearchservice.dto.book.BookSearchResponse}
  * to the SearchResponse {@link bookmediasearchservice.bookmediasearchservice.dto.SearchResponse}
+ * </p>
  */
 @NoArgsConstructor(staticName = "of")
 public class GoogleServiceConverter implements ServiceConverter {
-    //todo: handle exception
     @Override
     public List<SearchResponse> convert(ProviderSearchResponse providerSearchResponse) {
         BookSearchResponse response = (BookSearchResponse) providerSearchResponse;

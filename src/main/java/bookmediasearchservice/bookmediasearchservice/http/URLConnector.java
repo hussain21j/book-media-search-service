@@ -20,9 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
@@ -30,10 +27,7 @@ import java.nio.charset.StandardCharsets;
  * Default {@link Connector} implementation using {@link URLConnection}.
  */
 @Slf4j
-public class URLConnector implements Connector, Serializable {
-
-    private static final long serialVersionUID = 1476515538667L;
-
+public class URLConnector implements Connector {
     /**
      * Reusable URLConnector object
      */
@@ -50,9 +44,7 @@ public class URLConnector implements Connector, Serializable {
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @throws MalformedURLException as thrown by {@link URL#URL(String)}
+     * reads the inputstream from the url connection
      */
     public String get(URLConnection connection) throws IOException {
         try (BufferedReader in = new BufferedReader(

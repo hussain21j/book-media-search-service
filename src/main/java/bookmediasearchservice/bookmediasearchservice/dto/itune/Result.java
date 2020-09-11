@@ -15,7 +15,6 @@
 */
 package bookmediasearchservice.bookmediasearchservice.dto.itune;
 
-import bookmediasearchservice.bookmediasearchservice.dto.itune.ITuneSearchResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,75 +29,76 @@ import java.math.BigDecimal;
 @Setter
 public class Result {
 
-	/**
-	 * The name of the object returned by the search request.
-	 * @return track, collection, artist
-	 */
-	private String wrapperType;
+    /**
+     * The name of the object returned by the search request.
+     *
+     * @return track, collection, artist
+     */
+    private String wrapperType;
 
-	/**
-	 * The kind of content returned by the search request.
-	 *
-	 * @return book, album, coached-audio, feature-movie, interactive- booklet,
-	 *         music-video, pdf podcast, podcast-episode, software-package,
-	 *         song, tv-episode, artist
-	 */
-	private String kind;
+    /**
+     * The kind of content returned by the search request.
+     *
+     * @return book, album, coached-audio, feature-movie, interactive- booklet,
+     * music-video, pdf podcast, podcast-episode, software-package,
+     * song, tv-episode, artist
+     */
+    private String kind;
 
-	private Long artistId;
-	private Long collectionId;
-	private Long trackId;
-	private String bundleId;
+    private Long artistId;
+    private Long collectionId;
+    private Long trackId;
+    private String bundleId;
 
-	private String artistName;
-	private String collectionName;
-	private String trackName;
+    private String artistName;
+    private String collectionName;
+    private String trackName;
 
-	private String collectionCensoredName;
-	private String trackCensoredName;
+    private String collectionCensoredName;
+    private String trackCensoredName;
 
-	private String artistViewUrl;
-	private String collectionViewUrl;
-	private String trackViewUrl;
-	private String feedUrl;
-	private String previewUrl;
+    private String artistViewUrl;
+    private String collectionViewUrl;
+    private String trackViewUrl;
+    private String feedUrl;
+    private String previewUrl;
 
-	private String artworkUrl30;
-	private String artworkUrl60;
-	private String artworkUrl100;
-	private String artworkUrl512;
-	private String artworkUrl600;
+    private String artworkUrl30;
+    private String artworkUrl60;
+    private String artworkUrl100;
+    private String artworkUrl512;
+    private String artworkUrl600;
 
-	private BigDecimal price;
-	private BigDecimal collectionPrice;
-	private BigDecimal trackPrice;
-	private BigDecimal trackRentalPrice;
-	private BigDecimal collectionHdPrice;
-	private BigDecimal trackHdPrice;
-	private BigDecimal trackHdRentalPrice;
-	private String formattedPrice;
+    private BigDecimal price;
+    private BigDecimal collectionPrice;
+    private BigDecimal trackPrice;
+    private BigDecimal trackRentalPrice;
+    private BigDecimal collectionHdPrice;
+    private BigDecimal trackHdPrice;
+    private BigDecimal trackHdRentalPrice;
+    private String formattedPrice;
 
-	private String releaseDate;
+    private String releaseDate;
 
-	private String collectionExplicitness;
-	private String trackExplicitness;
+    private String collectionExplicitness;
+    private String trackExplicitness;
 
-	private Integer discCount;
-	private Integer discNumber;
+    private Integer discCount;
+    private Integer discNumber;
 
-	private Integer trackCount;
-	private Integer trackNumber;
+    private Integer trackCount;
+    private Integer trackNumber;
 
-	private String copyright;
+    private String copyright;
 
-	private Long trackTimeMillis;
+    private Long trackTimeMillis;
 
-	private String country;
-	private String currency;
+    private String country;
+    private String currency;
 
-	private String primaryGenreId;
-	private String primaryGenreName;
+    private String primaryGenreId;
+    private String primaryGenreName;
 
-	private Boolean isStreamable;
+    private Boolean isStreamable;
 
 }

@@ -23,6 +23,8 @@ import bookmediasearchservice.bookmediasearchservice.dto.itune.Lang;
 import bookmediasearchservice.bookmediasearchservice.dto.itune.Media;
 import bookmediasearchservice.bookmediasearchservice.http.Connector;
 import bookmediasearchservice.bookmediasearchservice.http.URLConnector;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.base.Stopwatch;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
@@ -38,7 +40,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static bookmediasearchservice.bookmediasearchservice.ApplicationConstants.ITUNE_MEDIA_SERVICE_METRIC;
+import static bookmediasearchservice.bookmediasearchservice.constants.ApplicationConstants.ITUNE_MEDIA_SERVICE_METRIC;
+
 
 /**
  * Searching service in the iTune API
@@ -60,6 +63,11 @@ public class ITuneService implements SearchService {
     private Integer version;
     private MeterRegistry meterRegistry;
 
+    /**
+     * mapper to convert json string to the object
+     */
+    public static final ObjectReader READER = new ObjectMapper().readerFor(ITuneSearchResponse.class);
+
 
     ITuneService(ServiceConverter serviceConverter, String apiEndpoint, int resultCount, int connectionTimeOut, int readTimeOut, MeterRegistry meterRegistry) {
         this.serviceConverter = serviceConverter;
@@ -78,7 +86,7 @@ public class ITuneService implements SearchService {
      */
     @Override
     public List<SearchResponse> search(String text) {
-        Timer timer = Timer.builder(ITUNE_MEDIA_SERVICE_METRIC).tag("method", "search").register(meterRegistry);
+        Timer timer = getTimer();
         this.term = text;
         List<SearchResponse> responses;
         Connector connector = URLConnector.INSTANCE;
@@ -90,7 +98,7 @@ public class ITuneService implements SearchService {
             stopwatch.start();
             String response = connector.get(getURLConnection());
             stopwatch.stop();
-            responses = this.serviceConverter.convert(ITuneSearchResponse.READER.readValue(response));
+            responses = this.serviceConverter.convert(READER.readValue(response));
         } catch (IOException e) {
             log.error("connection to ITune service with url {} could not be made", this.apiEndpoint);
             responses = Collections.emptyList();
@@ -142,6 +150,15 @@ public class ITuneService implements SearchService {
         connection.setConnectTimeout(this.connectionTimeOut);
         connection.setReadTimeout(this.readTimeOut);
         return connection;
+    }
+
+    /**
+     * gets the Metrics Timer object
+     *
+     * @return
+     */
+    public Timer getTimer() {
+        return Timer.builder(ITUNE_MEDIA_SERVICE_METRIC).tag("method", "search").register(meterRegistry);
     }
 
 

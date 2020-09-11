@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +24,7 @@ import java.util.Arrays;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = SearchController.class)
+@Import({MetricsAutoConfiguration.class, CompositeMeterRegistryAutoConfiguration.class})
 class SearchControllerTest {
     @Autowired
     private MockMvc mockMvc;

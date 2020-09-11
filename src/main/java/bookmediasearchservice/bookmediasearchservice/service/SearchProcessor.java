@@ -9,7 +9,10 @@ import java.util.List;
 
 /**
  * <p>
- * makes the search in all the searching services provided
+ * The search process is the search engine
+ * All the search services to be searched is passed in one list.
+ * so in future as many services can be as desired, the engine will make search on all these services
+ * collects the results , sort these and return the final sorted search result list
  * </p>
  */
 @AllArgsConstructor(staticName = "of")
@@ -24,7 +27,6 @@ public class SearchProcessor {
      */
     public List<SearchResponse> processSearch() {
         ArrayList<SearchResponse> responses = new ArrayList<>();
-        //todo: try parllel stream
         searchServices.forEach(searchService -> {
             responses.addAll(searchService.search(textToSearch));
         });

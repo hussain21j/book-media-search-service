@@ -18,13 +18,22 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestController
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String APPLICATION_ERROR = "Application error, something went wrong in the API";
+    private static final String VALIDATION_EXCEPTION_ERROR = "Application error, something went wrong in the API";
+
+    /**
+     * Validation exceptions
+     */
+    @ExceptionHandler(ValidationException.class)
+    public final ResponseEntity<ErrorResponse> handValidationException(RuntimeException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(VALIDATION_EXCEPTION_ERROR, ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     /**
      * Global Runtime exception mapper when no error exception matches
      */
     @ExceptionHandler(Exception.class)
-    public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RuntimeException ex, WebRequest request)
-    {
+    public final ResponseEntity<ErrorResponse> handleGlobalException(RuntimeException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(APPLICATION_ERROR, ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }

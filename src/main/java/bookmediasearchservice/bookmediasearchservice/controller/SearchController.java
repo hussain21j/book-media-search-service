@@ -27,9 +27,9 @@ public class SearchController {
 
     @CrossOrigin
     @GetMapping(value = "/search", produces = "application/json")
-    public List<SearchResponse>  makeSearch(@RequestParam(required = true) String text) {
-        log.info("text to be searched  :"+text);
-        List<SearchResponse> responseList=  searchingService.searchMedia(text);
+    public List<SearchResponse> makeSearch(@RequestParam(required = true) String text) {
+        log.info("text to be searched  :" + text);
+        List<SearchResponse> responseList = searchingService.searchMedia(text);
         return responseList;
     }
 }

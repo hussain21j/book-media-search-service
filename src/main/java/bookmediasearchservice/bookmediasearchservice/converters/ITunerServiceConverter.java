@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * <p>
  * converter for the ITuneSearchResponse {@link ITuneSearchResponse}
  * to the SearchResponse {@link bookmediasearchservice.bookmediasearchservice.dto.SearchResponse}
+ * </p>
  */
 public class ITunerServiceConverter implements ServiceConverter {
     @Override
