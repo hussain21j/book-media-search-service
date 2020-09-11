@@ -43,10 +43,11 @@ can be found at  url url  `http://localhost:8080/actuator/health` [actuator heal
 * you can inject any number of services you want for searching. which mean you can add any number of services you want like `Google Book Service` and `ITune service`. The design of code is capable enough to handle to it.
 * you can easily change the behavoiur of the converter. The code design is flexible to accomodate it.
 
+
 ![alt text](https://github.com/hussain21j/book-media-search-service/blob/master/class-diagram.png)
 
 
 ### Further improvements I wanted to, but could not because of time limit
 1. better and clean approach for accessing the micrometer object in non spring managed classes
 2. improve exception handling 
-4. wanted to containarize the application
+4. containarize the application
